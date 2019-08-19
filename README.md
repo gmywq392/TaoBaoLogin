@@ -40,3 +40,21 @@ python login.py
 这个是如果滑块过不了的话，可以重新采集一下轨迹列表<br>
 脚本文件：track.js<br>
 文件内有注释这里就不写了
+
+### 千牛卖家订单列表获取
+##### get_qianniu_orders.py 
+```python
+tb = TBLogin(username, password)
+tb.login()
+cookies = tb.get_cookies()
+collector = QianNiuOrderCollector(cookies)
+res = collector.get_orders(1, 0)
+orders = []
+for order in res:
+    item = {'orderId': order['id'], 'orderCreateTime ': order['orderInfo']['createTime'],
+            'orderStatusDesc ': order['statusInfo']['text'], 'storeName ': '',
+            'buyerName ': order['buyer']['nick'], 'itemName ': order['subOrders'][0]['itemInfo']['title']}
+    orders.append(item)
+print(orders)
+tb.browser.quit()
+```
